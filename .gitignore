@@ -1,0 +1,12 @@
+build/
+.coverage
+bmt/_data/
+dist/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.python-version
+__pycache__/
+.tox/
+venv/
+.vscode/
