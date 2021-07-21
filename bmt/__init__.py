@@ -16,19 +16,19 @@ class Toolkit():
         if schema is not None:
             raise ValueError("bmt-lite does not support the `schema` argument. The biolink model version is dictated by the library flavor you installed.")
 
-    def get_all_classes(self):
+    def get_all_classes(self) -> List[str]:
         """Get all classes."""
         return all_classes
 
-    def get_all_slots(self):
+    def get_all_slots(self) -> List[str]:
         """Get all slots."""
         return all_slots
 
-    def get_all_types(self):
+    def get_all_types(self) -> List[str]:
         """Get all types."""
         return all_types
 
-    def get_all_elements(self):
+    def get_all_elements(self) -> List[str]:
         """Get all elements."""
         return all_elements
 
@@ -37,7 +37,7 @@ class Toolkit():
         self,
         name: str,
         reflexive: bool = True,
-    ):
+    ) -> List[str]:
         """Get ancestors."""
         if name not in ancestors:
             return []
@@ -51,7 +51,7 @@ class Toolkit():
         self,
         name: str,
         reflexive: bool = True,
-    ):
+    ) -> List[str]:
         """Get descendants."""
         if name not in descendants:
             return []
@@ -64,7 +64,7 @@ class Toolkit():
     def get_children(
         self,
         name: str,
-    ):
+    ) -> List[str]:
         """Get children."""
         return children.get(name, [])
 
@@ -72,7 +72,7 @@ class Toolkit():
     def get_parent(
         self,
         name: str,
-    ):
+    ) -> Optional[str]:
         """Get parent."""
         return parent.get(name, None)
 
@@ -80,7 +80,7 @@ class Toolkit():
     def get_element(
         self,
         name: str,
-    ):
+    ) -> Optional["Element"]:
         """Get element."""
         if name in all_classes:
             return ClassDefinition(name, **element.get(name, dict()))

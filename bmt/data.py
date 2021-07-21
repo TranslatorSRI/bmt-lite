@@ -1,7 +1,7 @@
 """Biolink model data."""
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import importlib.resources as pkg_resources
 
@@ -22,6 +22,6 @@ with pkg_resources.open_text(_data, "descendants.json") as stream:
 with pkg_resources.open_text(_data, "children.json") as stream:
     children: Dict[str, List[str]] = json.load(stream)
 with pkg_resources.open_text(_data, "parent.json") as stream:
-    parent: Dict[str, List[str]] = json.load(stream)
+    parent: Dict[str, Optional[str]] = json.load(stream)
 with pkg_resources.open_text(_data, "element.json") as stream:
     element: Dict[str, Dict] = json.load(stream)
