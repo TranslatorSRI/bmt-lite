@@ -1,6 +1,5 @@
 """Biolink model data."""
 import json
-from pathlib import Path
 from typing import Dict, List, Optional
 
 import importlib.resources as pkg_resources
