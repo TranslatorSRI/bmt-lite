@@ -7,8 +7,6 @@ import importlib.resources as pkg_resources
 
 from . import _data
 
-DATAPATH = Path("bmt/_data")
-
 with pkg_resources.open_text(_data, "all_classes.json") as stream:
     all_classes: List[str] = json.load(stream)
 with pkg_resources.open_text(_data, "all_elements.json") as stream:
