@@ -104,6 +104,10 @@ def build(version: str):
             slot: {
                 "symmetric": el.symmetric,
                 "inverse": el.inverse,
+                "annotations": {
+                    tag: annotation.value.lower() == "true"
+                    for tag, annotation in el.annotations.items()
+                },
             }
             for slot in slots
             if (el := BMT.get_element(slot)) is not None
@@ -129,7 +133,7 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="1.0.2",
+    version="1.1.0",
     author="Patrick Wang",
     author_email="patrick@covar.com",
     url="https://github.com/patrickkwang/bmt-lite",
