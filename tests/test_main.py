@@ -43,7 +43,7 @@ def test_get_descendants():
     assert "biolink:decreases_expression_of" in descendants
 
     descendants = BMT.get_descendants("biolink:not_a_real_predicate", reflexive=True)
-    assert descendants == []
+    assert descendants == ["not a real predicate"]
 
 
 def test_get_ancestors():
