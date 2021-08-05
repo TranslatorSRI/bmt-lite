@@ -103,6 +103,7 @@ class SlotDefinition(Element):
         name: str,
         symmetric: bool = False,
         inverse: Optional[str] = None,
+        **kwargs,
     ):
         """Initialize."""
         super().__init__(name)
