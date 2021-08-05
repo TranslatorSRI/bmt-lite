@@ -39,12 +39,11 @@ class Toolkit():
         reflexive: bool = True,
     ) -> List[str]:
         """Get ancestors."""
-        if name not in ancestors:
-            return []
+        _ancestors = ancestors.get(name, [])
         if reflexive:
-            return ancestors[name] + [name]
+            return _ancestors + [name]
         else:
-            return ancestors[name]
+            return _ancestors
 
     @with_formatting()
     def get_descendants(
@@ -53,12 +52,11 @@ class Toolkit():
         reflexive: bool = True,
     ) -> List[str]:
         """Get descendants."""
-        if name not in descendants:
-            return []
+        _descendants = descendants.get(name, [])
         if reflexive:
-            return descendants[name] + [name]
+            return _descendants + [name]
         else:
-            return descendants[name]
+            return _descendants
 
     @with_formatting()
     def get_children(
