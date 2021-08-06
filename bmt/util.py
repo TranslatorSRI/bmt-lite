@@ -60,6 +60,15 @@ def snake_to_pascal(s: str, sep: str = "_") -> str:
     )
 
 
+def guess_casing(s: str) -> str:
+    """Guess snake case or Pascal case."""
+    if "_" in s:
+        return "snake"
+    if any(c.isupper() for c in s):
+        return "pascal"
+    return "snake"
+
+
 def normalize(s: str) -> str:
     """Normalize string input."""
     if s.startswith("biolink:"):
