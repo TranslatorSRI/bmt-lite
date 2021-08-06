@@ -117,6 +117,7 @@ def with_formatting():
         @wraps(func)
         def wrapper(self, s: str, *args, formatted=False, **kwargs):
             """Wrap in format conversions."""
+            case = guess_casing(s)
             normalized = normalize(s)
             output: Union[str, List[str]] = func(self, normalized, *args, **kwargs)
             if formatted:
@@ -125,7 +126,7 @@ def with_formatting():
                 elif normalized in all_slots:
                     output = format(output, case="snake")
                 else:
-                    output = format(output)
+                    output = format(output, case=case)
             return output
         return wrapper
     return decorator
