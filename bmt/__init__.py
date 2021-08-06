@@ -1,5 +1,5 @@
 """BMT basics."""
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from .data import (
     all_classes, all_elements, all_slots,
@@ -111,12 +111,18 @@ class SlotDefinition(Element):
         name: str,
         symmetric: bool = False,
         inverse: Optional[str] = None,
+        annotations: Dict[str, bool] = dict(),
+        slot_uri: Optional[str] = None,
+        range: Optional[str] = None,
         **kwargs,
     ):
         """Initialize."""
         super().__init__(name)
         self.symmetric: bool = symmetric
         self.inverse: Optional[str] = inverse
+        self.annotations: Dict[str, bool] = annotations
+        self.slot_uri: Optional[str] = slot_uri
+        self.range: Optional[str] = range
 
 
 class ClassDefinition(Element):
