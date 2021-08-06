@@ -65,3 +65,13 @@ def test_get_all_slots():
     slots = BMT.get_all_slots()
     
     assert "contraindicated for" in slots
+
+
+def test_dict_like():
+    """Test dict-like features."""
+    BMT = Toolkit()
+
+    element = BMT.get_element("disease")
+    element.foo = "bar"
+    assert "foo" in element
+    assert element["foo"] == "bar"
