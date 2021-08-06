@@ -135,7 +135,7 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.0.0",
+    version="2.1.0",
     author="Patrick Wang",
     author_email="patrick@covar.com",
     url="https://github.com/patrickkwang/bmt-lite",
