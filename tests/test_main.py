@@ -87,3 +87,14 @@ def test_slot_attributes():
 
     element = BMT.get_element("treats")
     assert element.annotations["biolink:canonical_predicate"]
+
+
+def test_unknown_casing():
+    """Test casing of unknown things."""
+    BMT = Toolkit()
+
+    descendants = BMT.get_descendants("biolink:UnknownThing", formatted=True, reflexive=True)
+    assert descendants == ["biolink:UnknownThing"]
+
+    descendants = BMT.get_descendants("biolink:unknown_predicate", formatted=True, reflexive=True)
+    assert descendants == ["biolink:unknown_predicate"]
