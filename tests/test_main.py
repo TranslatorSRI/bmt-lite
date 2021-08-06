@@ -75,3 +75,15 @@ def test_dict_like():
     element.foo = "bar"
     assert "foo" in element
     assert element["foo"] == "bar"
+
+
+def test_slot_attributes():
+    """Test slot attributes."""
+    BMT = Toolkit()
+
+    element = BMT.get_element("has dataset")
+    assert element.slot_uri == "dct:source"
+    assert element.range == "dataset"
+
+    element = BMT.get_element("treats")
+    assert element.annotations["biolink:canonical_predicate"]
