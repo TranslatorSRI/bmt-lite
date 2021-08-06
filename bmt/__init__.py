@@ -87,11 +87,19 @@ class Toolkit():
         return None
 
 
-class Element():
+class AttrDict(dict):
+    """https://stackoverflow.com/a/14620633"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__dict__ = self
+
+
+class Element(AttrDict):
     """Biolink model element."""
 
     def __init__(self, name: str):
         """Initialize."""
+        super().__init__()
         self.name: str = name
 
 
