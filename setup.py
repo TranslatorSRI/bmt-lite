@@ -108,6 +108,8 @@ def build(version: str):
                     tag: annotation.value.lower() == "true"
                     for tag, annotation in el.annotations.items()
                 },
+                "slot_uri": el.slot_uri,
+                "range": el.range,
             }
             for slot in slots
             if (el := BMT.get_element(slot)) is not None
