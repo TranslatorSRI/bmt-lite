@@ -1,7 +1,7 @@
 """Test case conversions."""
 import pytest
 
-from bmt.util import pascal_to_snake, snake_to_pascal
+from bmt.util import pascal_to_snake, snake_to_pascal, guess_casing
 
 cases = [
     ("PhenotypicFeature", "phenotypic_feature"),
@@ -25,3 +25,20 @@ def test_pascal_to_snake(original, target):
 def test_snake_to_pascal(original, target):
     """Test snake_to_pascal()."""
     assert snake_to_pascal(original) == target
+
+
+cases = [
+    ("Disease", "pascal"),
+    ("PhenotypicFeature", "pascal"),
+    ("treated_by", "snake"),
+    ("call_the_FBI", "snake"),
+    ("affects", "snake"),
+    ("TheFBI", "pascal"),
+    ("RNA", "pascal"),
+]
+
+
+@pytest.mark.parametrize("name,case", cases)
+def test_guess_casing(name, case):
+    """Test guess_casing()."""
+    assert guess_casing(name) == case
