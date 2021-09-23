@@ -3,9 +3,9 @@ from typing import Dict, List, Optional
 
 from .data import (
     all_classes, all_elements, all_slots, all_types,
-    alias_ancestors, basic_ancestors, mixin_ancestors,
-    alias_descendants, basic_descendants, mixin_descendants,
-    alias_children, basic_children, mixin_children,
+    alias_ancestors, basic_ancestors, mixin_ancestors, alias_mixin_ancestors,
+    alias_descendants, basic_descendants, mixin_descendants, alias_mixin_descendants,
+    alias_children, basic_children, mixin_children, alias_mixin_children,
     parent, element,
 )
 from .util import with_formatting
@@ -49,6 +49,8 @@ class Toolkit():
             _ancestors += mixin_ancestors.get(name, [])
         if alias:
             _ancestors += alias_ancestors.get(name, [])
+        if mixin and alias:
+            _ancestors += alias_mixin_ancestors.get(name, [])
         if reflexive:
             return _ancestors + [name]
         else:
@@ -68,6 +70,8 @@ class Toolkit():
             _descendants += mixin_descendants.get(name, [])
         if alias:
             _descendants += alias_descendants.get(name, [])
+        if mixin and alias:
+            _descendants += alias_mixin_descendants.get(name, [])
         if reflexive:
             return _descendants + [name]
         else:
@@ -86,6 +90,8 @@ class Toolkit():
             _children += mixin_children.get(name, [])
         if alias:
             _children += alias_children.get(name, [])
+        if mixin and alias:
+            _children += alias_mixin_children.get(name, [])
         return _children
 
     @with_formatting()
