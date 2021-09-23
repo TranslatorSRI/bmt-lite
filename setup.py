@@ -60,28 +60,114 @@ def build(version: str):
         json.dump(elements, stream)
 
     # get_ancestors()
-    ancestors = {
-        element: BMT.get_ancestors(element, reflexive=False)
+    basic_ancestors = {
+        element: BMT.get_ancestors(
+            element,
+            reflexive=False,
+            mixin=False,
+        )
         for element in elements
     }
-    with open(DATAPATH / "ancestors.json", "w") as stream:
-        json.dump(ancestors, stream)
+    alias_ancestors = {
+        element: [
+            alias
+            for ancestor in basics
+            if (el := BMT.get_element(ancestor)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, basics in basic_ancestors.items()
+    }
+    mixin_ancestors = {
+        element: [
+            ancestor
+            for ancestor in BMT.get_ancestors(
+                element,
+                reflexive=False,
+                mixin=True,
+            )
+            if ancestor not in basic_ancestors[element]
+        ]
+        for element in elements
+    }
+    with open(DATAPATH / "basic_ancestors.json", "w") as stream:
+        json.dump(basic_ancestors, stream)
+    with open(DATAPATH / "alias_ancestors.json", "w") as stream:
+        json.dump(alias_ancestors, stream)
+    with open(DATAPATH / "mixin_ancestors.json", "w") as stream:
+        json.dump(mixin_ancestors, stream)
 
     # get_descendants()
-    descendants = {
-        element: BMT.get_descendants(element, reflexive=False)
+    basic_descendants = {
+        element: BMT.get_descendants(
+            element,
+            reflexive=False,
+            mixin=False,
+        )
         for element in elements
     }
-    with open(DATAPATH / "descendants.json", "w") as stream:
-        json.dump(descendants, stream)
+    alias_descendants = {
+        element: [
+            alias
+            for descendant in basics
+            if (el := BMT.get_element(descendant)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, basics in basic_descendants.items()
+    }
+    # assume that mixins do not have aliases?
+    mixin_descendants = {
+        element: [
+            descendant
+            for descendant in BMT.get_descendants(
+                element,
+                reflexive=False,
+                mixin=True,
+            )
+            if descendant not in basic_descendants[element]
+        ]
+        for element in elements
+    }
+    with open(DATAPATH / "basic_descendants.json", "w") as stream:
+        json.dump(basic_descendants, stream)
+    with open(DATAPATH / "alias_descendants.json", "w") as stream:
+        json.dump(alias_descendants, stream)
+    with open(DATAPATH / "mixin_descendants.json", "w") as stream:
+        json.dump(mixin_descendants, stream)
 
     # get_children()
-    children = {
-        element: BMT.get_children(element)
+    basic_children = {
+        element: BMT.get_children(
+            element,
+            mixin=False,
+        )
         for element in elements
     }
-    with open(DATAPATH / "children.json", "w") as stream:
-        json.dump(children, stream)
+    alias_children = {
+        element: [
+            alias
+            for _child in basics
+            if (el := BMT.get_element(_child)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, basics in basic_children.items()
+    }
+    mixin_children = {
+        element: [
+            child
+            for child in BMT.get_children(
+                element,
+                mixin=True,
+            )
+            if child not in basic_children[element]
+        ]
+        for element in elements
+    }
+    with open(DATAPATH / "basic_children.json", "w") as stream:
+        json.dump(basic_children, stream)
+    with open(DATAPATH / "alias_children.json", "w") as stream:
+        json.dump(alias_children, stream)
+    with open(DATAPATH / "mixin_children.json", "w") as stream:
+        json.dump(mixin_children, stream)
 
     # get_parent()
     parent = {
@@ -96,6 +182,7 @@ def build(version: str):
         **{
             class_: {
                 "id_prefixes": el.id_prefixes,
+                "mixins": el.mixins,
             }
             for class_ in classes
             if (el := BMT.get_element(class_)) is not None
@@ -135,7 +222,7 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.1.1",
+    version="2.2.0",
     author="Patrick Wang",
     author_email="patrick@covar.com",
     url="https://github.com/patrickkwang/bmt-lite",

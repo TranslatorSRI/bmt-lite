@@ -2,8 +2,11 @@
 from typing import Dict, List, Optional
 
 from .data import (
-    all_classes, all_elements, all_slots,
-    all_types, ancestors, descendants, children, parent, element,
+    all_classes, all_elements, all_slots, all_types,
+    alias_ancestors, basic_ancestors, mixin_ancestors,
+    alias_descendants, basic_descendants, mixin_descendants,
+    alias_children, basic_children, mixin_children,
+    parent, element,
 )
 from .util import with_formatting
 
@@ -37,9 +40,15 @@ class Toolkit():
         self,
         name: str,
         reflexive: bool = True,
+        mixin: bool = True,
+        alias: bool = False,
     ) -> List[str]:
         """Get ancestors."""
-        _ancestors = ancestors.get(name, [])
+        _ancestors = basic_ancestors.get(name, [])
+        if mixin:
+            _ancestors += mixin_ancestors.get(name, [])
+        if alias:
+            _ancestors += alias_ancestors.get(name, [])
         if reflexive:
             return _ancestors + [name]
         else:
@@ -50,9 +59,15 @@ class Toolkit():
         self,
         name: str,
         reflexive: bool = True,
+        mixin: bool = True,
+        alias: bool = False,
     ) -> List[str]:
         """Get descendants."""
-        _descendants = descendants.get(name, [])
+        _descendants = basic_descendants.get(name, [])
+        if mixin:
+            _descendants += mixin_descendants.get(name, [])
+        if alias:
+            _descendants += alias_descendants.get(name, [])
         if reflexive:
             return _descendants + [name]
         else:
@@ -62,9 +77,16 @@ class Toolkit():
     def get_children(
         self,
         name: str,
+        mixin: bool = True,
+        alias: bool = False,
     ) -> List[str]:
         """Get children."""
-        return children.get(name, [])
+        _children = basic_children.get(name, [])
+        if mixin:
+            _children += mixin_children.get(name, [])
+        if alias:
+            _children += alias_children.get(name, [])
+        return _children
 
     @with_formatting()
     def get_parent(
@@ -132,7 +154,9 @@ class ClassDefinition(Element):
         self,
         name: str,
         id_prefixes: List[str],
+        mixins: List[str],
     ):
         """Initialize."""
         super().__init__(name)
         self.id_prefixes: List[str] = id_prefixes
+        self.mixins: List[str] = mixins
