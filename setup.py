@@ -89,12 +89,23 @@ def build(version: str):
         ]
         for element in elements
     }
+    alias_mixin_ancestors = {
+        element: [
+            alias
+            for ancestor in mixins
+            if (el := BMT.get_element(ancestor)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, mixins in mixin_ancestors.items()
+    }
     with open(DATAPATH / "basic_ancestors.json", "w") as stream:
         json.dump(basic_ancestors, stream)
     with open(DATAPATH / "alias_ancestors.json", "w") as stream:
         json.dump(alias_ancestors, stream)
     with open(DATAPATH / "mixin_ancestors.json", "w") as stream:
         json.dump(mixin_ancestors, stream)
+    with open(DATAPATH / "alias_mixin_ancestors.json", "w") as stream:
+        json.dump(alias_mixin_ancestors, stream)
 
     # get_descendants()
     basic_descendants = {
@@ -114,7 +125,6 @@ def build(version: str):
         ]
         for element, basics in basic_descendants.items()
     }
-    # assume that mixins do not have aliases?
     mixin_descendants = {
         element: [
             descendant
@@ -127,12 +137,23 @@ def build(version: str):
         ]
         for element in elements
     }
+    alias_mixin_descendants = {
+        element: [
+            alias
+            for descendant in mixins
+            if (el := BMT.get_element(descendant)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, mixins in mixin_descendants.items()
+    }
     with open(DATAPATH / "basic_descendants.json", "w") as stream:
         json.dump(basic_descendants, stream)
     with open(DATAPATH / "alias_descendants.json", "w") as stream:
         json.dump(alias_descendants, stream)
     with open(DATAPATH / "mixin_descendants.json", "w") as stream:
         json.dump(mixin_descendants, stream)
+    with open(DATAPATH / "alias_mixin_descendants.json", "w") as stream:
+        json.dump(alias_mixin_descendants, stream)
 
     # get_children()
     basic_children = {
@@ -162,12 +183,23 @@ def build(version: str):
         ]
         for element in elements
     }
+    alias_mixin_children = {
+        element: [
+            alias
+            for _child in mixins
+            if (el := BMT.get_element(_child)) is not None and (aliases := el.aliases) is not None
+            for alias in aliases
+        ]
+        for element, mixins in mixin_children.items()
+    }
     with open(DATAPATH / "basic_children.json", "w") as stream:
         json.dump(basic_children, stream)
     with open(DATAPATH / "alias_children.json", "w") as stream:
         json.dump(alias_children, stream)
     with open(DATAPATH / "mixin_children.json", "w") as stream:
         json.dump(mixin_children, stream)
+    with open(DATAPATH / "alias_mixin_children.json", "w") as stream:
+        json.dump(alias_mixin_children, stream)
 
     # get_parent()
     parent = {
