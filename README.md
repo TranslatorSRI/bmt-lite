@@ -18,7 +18,7 @@ Note: _bmt-lite_ does not implement all of the functionality of _bmt_. Feature r
 # Installation
 
 You must install a specific "flavor" of bmt-lite corresponding to the Biolink model version that you want.
-Versions 1.7.0 - 2.2.0 are currently available.
+Versions 1.7.0 - 2.2.5 are currently available.
 
 For example,
 ```bash
