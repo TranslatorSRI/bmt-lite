@@ -23,6 +23,7 @@ jobs:
         - '2.2.3'
         - '2.2.4'
         - '2.2.5'
+        - 'v2.3.0'
     steps:
     - uses: actions/checkout@master
     - name: Set up Python 3.9
