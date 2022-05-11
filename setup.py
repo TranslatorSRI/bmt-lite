@@ -244,7 +244,7 @@ with open("README.md", "r") as stream:
 try:
     idx = next(
         idx for idx, arg in enumerate(sys.argv)
-        if (match := re.fullmatch(r"--v\d+\.\d+\.\d+", arg)) is not None
+        if (match := re.fullmatch(r"--vv?\d+\.\d+\.\d+", arg)) is not None
     )
 except StopIteration:
     print("ERROR: Specify a biolink-model version using the '--vX.Y.Z' argument")
@@ -254,7 +254,7 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.2.0",
+    version="2.2.1",
     author="Patrick Wang",
     author_email="patrick@covar.com",
     url="https://github.com/patrickkwang/bmt-lite",
