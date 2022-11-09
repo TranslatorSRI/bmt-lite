@@ -1,9 +1,10 @@
 """Set up bmt-lite package."""
 import json
-from pathlib import Path
 import re
-from setuptools import setup
 import sys
+from pathlib import Path
+
+from setuptools import setup
 
 stash = sys.path.pop(0)  # avoid trying to import the local bmt
 from bmt import Toolkit
@@ -54,8 +55,8 @@ def build(version: str):
     with open(DATAPATH / "all_types.json", "w") as stream:
         json.dump(types, stream)
 
-    # get_all_elements()
-    elements = classes + slots  + types
+    # get_all_elements() , make sure they are supported by bmt
+    elements = list(filter(lambda e: BMT.get_element(e), classes + slots  + types))
     with open(DATAPATH / "all_elements.json", "w") as stream:
         json.dump(elements, stream)
 
@@ -254,7 +255,7 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.2.1",
+    version="2.2.2",
     author="Patrick Wang",
     author_email="patrick@covar.com",
     url="https://github.com/patrickkwang/bmt-lite",
