@@ -6,7 +6,7 @@ from .data import (
     alias_ancestors, basic_ancestors, mixin_ancestors, alias_mixin_ancestors,
     alias_descendants, basic_descendants, mixin_descendants, alias_mixin_descendants,
     alias_children, basic_children, mixin_children, alias_mixin_children,
-    parent, element,
+    parent, element, enums
 )
 from .util import with_formatting
 
@@ -34,6 +34,57 @@ class Toolkit():
     def get_all_elements(self) -> List[str]:
         """Get all elements."""
         return all_elements
+
+    def get_all_enums(self):
+        return list(enums.keys())
+
+    def get_enum_permissible_values(self, enum_name):
+        if not enum_name in enums:
+            return None
+        else:
+            return enums[enum_name].get('all_values')
+
+    def get_enum_value_ancestors(self,
+                                 enum_name: str,
+                                 value_name: str,
+                                 reflexive: bool = True):
+        """Traverse ancestry"""
+        all_ancestors = []
+        guide = enums.get(enum_name, {}).get('ancestors', {})
+        if not guide:
+            return None
+        parent = guide.get(value_name)
+        # if reflexive add parameter to list
+        if reflexive:
+            all_ancestors.append(value_name)
+        while parent:
+            all_ancestors.append(parent)
+            parent = enums.get(enum_name, {}).get('ancestors', {}).get(parent)
+        return all_ancestors
+
+    def get_enum_value_descendants(self,
+                                   enum_name: str,
+                                   value_name: str,
+                                   reflexive: bool = True):
+        """Return list of descendants"""
+        all_decendants = []
+        decendants = enums.get(enum_name, {}).get('descendants', {})
+        if not decendants:
+            return None
+        if reflexive:
+            all_decendants.append(value_name)
+
+        def inorder_traversal(decendants, root):
+            roots = decendants.get(root)
+            res = []
+            if roots:
+                res += roots
+                for r in roots:
+                    res += inorder_traversal(decendants, r)
+            return res
+        all_decendants += inorder_traversal(decendants, value_name)
+        return all_decendants
+
 
     @with_formatting()
     def get_ancestors(

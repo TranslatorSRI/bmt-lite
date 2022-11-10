@@ -3,6 +3,7 @@ import json
 import re
 import sys
 from pathlib import Path
+import yaml
 
 from setuptools import setup
 
@@ -25,20 +26,55 @@ versions = [
 ]
 
 
+def build_enum_hierarchy(biolink_version):
+    url = f"https://raw.githubusercontent.com/biolink/biolink-model/{biolink_version}/biolink-model.yaml"
+    source = httpx.get(url).text
+    source = yaml.load(source, Loader=yaml.FullLoader)
+    formatted = {}
+    for enum_name, value in source.get('enums', {}).items():
+        values_ancestry = {}
+        values_descendants = {}
+        all_values = []
+        formatted[enum_name] = {
+            "descendants": values_descendants,
+            "ancestors": values_ancestry,
+            "all_values": all_values
+        }
+        permissible_values = value.get('permissible_values', {})
+        # organize hierarchy of values
+        for k, v in permissible_values.items():
+            if k not in all_values:
+                all_values.append(k)
+            if v:
+                parent = v.get('is_a')
+                values_descendants[parent] = values_descendants.get(parent, [])
+                if parent and k not in values_descendants[parent]:
+                    values_descendants[parent].append(k)
+                values_ancestry[k] = parent
+            else:
+                values_ancestry[k] = None
+    return formatted
+
+
 def build(version: str):
     """Build BMT data."""
+    version_formatted = None
     if version in versions:
-        BMT = Toolkit(
-            schema=f"https://raw.githubusercontent.com/biolink/biolink-model/{version}/biolink-model.yaml",
-        )
+        version_formatted = version
     elif "v" + version in versions:
-        BMT = Toolkit(
-            schema=f"https://raw.githubusercontent.com/biolink/biolink-model/v{version}/biolink-model.yaml",
-        )
+        version_formatted = "v" + version
     elif version.removeprefix("v") in versions:
-        BMT = Toolkit(
-            schema=f"https://raw.githubusercontent.com/biolink/biolink-model/{version[1:]}/biolink-model.yaml",
-        )
+        version_formatted = version[1:]
+    if not version_formatted:
+        raise Exception(f"Version {version} not found.")
+    print(f'Building version {version_formatted}')
+    BMT = Toolkit(
+        schema=f"https://raw.githubusercontent.com/biolink/biolink-model/{version_formatted}/biolink-model.yaml",
+    )
+
+    enums = build_enum_hierarchy(biolink_version=version_formatted)
+    with open(DATAPATH / "all_enums.json", "w") as stream:
+        json.dump(enums, stream)
 
     # get_all_classes()
     classes = BMT.get_all_classes()
