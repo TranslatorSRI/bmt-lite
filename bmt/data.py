@@ -42,3 +42,5 @@ with pkg_resources.open_text(_data, "parent.json") as stream:
     parent: Dict[str, Optional[str]] = json.load(stream)
 with pkg_resources.open_text(_data, "element.json") as stream:
     element: Dict[str, Dict] = json.load(stream)
+with pkg_resources.open_text(_data, "all_enums.json") as stream:
+    enums: Dict[str, Dict] = json.load(stream)
