@@ -291,10 +291,10 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.2.2",
+    version="2.3.0",
     author="Patrick Wang",
     author_email="patrick@covar.com",
-    url="https://github.com/patrickkwang/bmt-lite",
+    url="https://github.com/TranslatorSRI/bmt-lite",
     description="A zero-dependency near-clone of common bmt capabilities",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -304,5 +304,5 @@ setup(
     install_requires=[],
     zip_safe=False,
     license="MIT",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
 )
