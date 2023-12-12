@@ -261,7 +261,7 @@ def build(version: str):
                 "symmetric": el.symmetric,
                 "inverse": el.inverse,
                 "annotations": {
-                    tag: annotation.value.lower() == "true"
+                    tag: annotation.value is True
                     for tag, annotation in el.annotations.items()
                 },
                 "slot_uri": el.slot_uri,
