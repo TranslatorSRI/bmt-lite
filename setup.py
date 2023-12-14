@@ -261,7 +261,7 @@ def build(version: str):
                 "symmetric": el.symmetric,
                 "inverse": el.inverse,
                 "annotations": {
-                    tag: annotation.value.lower() == "true"
+                    tag: annotation.value is True
                     for tag, annotation in el.annotations.items()
                 },
                 "slot_uri": el.slot_uri,
@@ -291,10 +291,10 @@ build(version)
 
 setup(
     name=f"bmt-lite-{version}",
-    version="2.2.2",
+    version="2.3.0",
     author="Patrick Wang",
     author_email="patrick@covar.com",
-    url="https://github.com/patrickkwang/bmt-lite",
+    url="https://github.com/TranslatorSRI/bmt-lite",
     description="A zero-dependency near-clone of common bmt capabilities",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -304,5 +304,5 @@ setup(
     install_requires=[],
     zip_safe=False,
     license="MIT",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
 )

@@ -190,7 +190,7 @@ class SlotDefinition(Element):
         name: str,
         symmetric: bool = False,
         inverse: Optional[str] = None,
-        annotations: Dict[str, bool] = dict(),
+        annotations: Dict[str, bool] = None,
         slot_uri: Optional[str] = None,
         range: Optional[str] = None,
         **kwargs,
@@ -199,7 +199,7 @@ class SlotDefinition(Element):
         super().__init__(name)
         self.symmetric: bool = symmetric
         self.inverse: Optional[str] = inverse
-        self.annotations: Dict[str, bool] = annotations
+        self.annotations: Dict[str, bool] = annotations if annotations else dict()
         self.slot_uri: Optional[str] = slot_uri
         self.range: Optional[str] = range
 
